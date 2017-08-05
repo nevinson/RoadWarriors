@@ -77,6 +77,12 @@
     <Compile Include="frmRacingDriver.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmRacingEvents.Designer.vb">
+      <DependentUpon>frmRacingEvents.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmRacingEvents.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -96,6 +102,9 @@
   <ItemGroup>
     <EmbeddedResource Include="frmRacingDriver.resx">
       <DependentUpon>frmRacingDriver.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmRacingEvents.resx">
+      <DependentUpon>frmRacingEvents.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
