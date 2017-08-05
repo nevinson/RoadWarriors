@@ -71,6 +71,12 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="frmEventsResults.Designer.vb">
+      <DependentUpon>frmEventsResults.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmEventsResults.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmRacingDriver.Designer.vb">
       <DependentUpon>frmRacingDriver.vb</DependentUpon>
     </Compile>
@@ -100,6 +106,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frmEventsResults.resx">
+      <DependentUpon>frmEventsResults.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmRacingDriver.resx">
       <DependentUpon>frmRacingDriver.vb</DependentUpon>
     </EmbeddedResource>
