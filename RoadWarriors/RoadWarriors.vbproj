@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
     <Compile Include="BusinessObjects\Constants.vb" />
+    <Compile Include="BusinessObjects\RacingDriver.vb" />
     <Compile Include="frmEventsResults.Designer.vb">
       <DependentUpon>frmEventsResults.vb</DependentUpon>
     </Compile>
