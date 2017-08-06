@@ -71,6 +71,8 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="BusinessObjects\Constants.vb" />
     <Compile Include="frmEventsResults.Designer.vb">
       <DependentUpon>frmEventsResults.vb</DependentUpon>
     </Compile>
@@ -137,5 +139,6 @@
     </None>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

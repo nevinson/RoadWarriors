@@ -10,3 +10,4 @@ D:\My Stuff\MyProjects\RoadWarriors\RoadWarriors\obj\Debug\RoadWarriors.xml
 D:\My Stuff\MyProjects\RoadWarriors\RoadWarriors\obj\Debug\RoadWarriors.pdb
 D:\My Stuff\MyProjects\RoadWarriors\RoadWarriors\obj\Debug\RoadWarriors.frmRacingDriver.resources
 D:\My Stuff\MyProjects\RoadWarriors\RoadWarriors\obj\Debug\RoadWarriors.frmRacingEvents.resources
+D:\My Stuff\MyProjects\RoadWarriors\RoadWarriors\obj\Debug\RoadWarriors.frmEventsResults.resources
