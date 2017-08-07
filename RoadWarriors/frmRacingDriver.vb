@@ -90,13 +90,15 @@
     End Sub
 
     Private Sub RacingEventsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RacingEventsToolStripMenuItem.Click
-        ''
-
+        ''show the racing events form
+        frmRacingEvents.Show()
+        Me.Hide()
     End Sub
 
     Private Sub EventsPerfomanceResultsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EventsPerfomanceResultsToolStripMenuItem.Click
-        ''
-
+        ''show the events results form
+        frmEventsResults.Show()
+        Me.Hide()
     End Sub
 #End Region
 
