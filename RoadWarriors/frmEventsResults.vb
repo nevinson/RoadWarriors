@@ -1,4 +1,6 @@
 ﻿Public Class frmEventsResults
+    ''
+    Dim objConstants As New Constants()
 
 #Region "Main Controls"
     Private Sub frmEventsResults_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -7,8 +9,8 @@
     End Sub
 
     Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
-        ''
-
+        ''call the getExit method 
+        objConstants.getExit(exitProgram:=CStr(True))
     End Sub
 
     Private Sub cmbRacerName_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbRacerName.SelectedIndexChanged
@@ -39,8 +41,8 @@
     End Sub
 
     Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
-        ''
-
+        ''call the getExit method 
+        objConstants.getExit(exitProgram:=CStr(True))
     End Sub
 #End Region
 

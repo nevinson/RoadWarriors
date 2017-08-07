@@ -1,4 +1,6 @@
 ﻿Public Class frmRacingDriver
+    ''
+    Dim objConstants As New Constants()
 
 #Region "Main Controls"
     Private Sub frmRacingDrivers_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -7,8 +9,8 @@
     End Sub
 
     Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
-        ''
-
+        ''call the getExit method 
+        objConstants.getExit(exitProgram:=CStr(True))
     End Sub
 
     Private Sub txtSearch_TextChanged(sender As Object, e As EventArgs) Handles txtSearch.TextChanged
@@ -46,7 +48,6 @@
         ''
 
     End Sub
-
 #End Region
 
 #Region "File Menu STrip"
@@ -61,8 +62,8 @@
     End Sub
 
     Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
-        ''
-
+        ''call the getExit method 
+        objConstants.getExit(exitProgram:=CStr(True))
     End Sub
 #End Region
 

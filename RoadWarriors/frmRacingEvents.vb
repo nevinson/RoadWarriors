@@ -1,4 +1,6 @@
 ﻿Public Class frmRacingEvents
+    ''
+    Dim objConstants As New Constants()
 
 #Region "Main Controls"
     Private Sub frmRacingEvents_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -6,18 +8,20 @@
 
     End Sub
 
+    Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
+        ''call the getExit method 
+        objConstants.getExit(exitProgram:=CStr(True))
+    End Sub
 
     Private Sub dgvRacingEvents_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvRacingEvents.CellContentClick
         ''
 
     End Sub
 
-
     Private Sub txtSearch_TextChanged(sender As Object, e As EventArgs) Handles txtSearch.TextChanged
         ''
 
     End Sub
-
 
     Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         ''
@@ -38,11 +42,6 @@
         ''
 
     End Sub
-
-    Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
-        ''
-
-    End Sub
 #End Region
 
 #Region "File Menu Strip"
@@ -57,8 +56,8 @@
     End Sub
 
     Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
-        ''
-
+        ''call the getExit method 
+        objConstants.getExit(exitProgram:=CStr(True))
     End Sub
 #End Region
 
