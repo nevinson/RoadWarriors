@@ -224,7 +224,32 @@ Public Class RacingDriver
 
     Public Function Create(ByRef strMsg As String) As Boolean
         ''
-        Return Nothing
+        Dim blnResult As Boolean = False
+        Dim strLine As String = ""
+
+        If File.Exists(objConstants.RacingDriverFileLocation) Then
+            Try
+                Dim objWriter As StreamWriter = File.AppendText(objConstants.RacingDriverFileLocation)
+
+                strLine = String.Format("{0}, {1}, {2}, {3}, {4}, {5}, {6}", MembershipNumber, Name, Surname, BirthDate, Gender, JoinDate, MembershipFeeOutstanding)
+
+                objWriter.Write(strLine)
+                objWriter.Write(Environment.NewLine)
+                objWriter.Close()
+
+                strMsg = "Record saved successfully!"
+                blnResult = True
+
+            Catch ex As Exception
+                strMsg = ex.Message
+                blnResult = False
+            End Try
+        Else
+            strMsg = "Racing drivers data file does not exist."
+            blnResult = False
+        End If
+
+        Return blnResult
     End Function
 
     Public Function Update(ByRef strMsg As String) As Boolean

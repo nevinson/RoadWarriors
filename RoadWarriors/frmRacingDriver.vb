@@ -30,7 +30,28 @@
 
     Private Sub btnCreate_Click(sender As Object, e As EventArgs) Handles btnCreate.Click
         ''
+        Dim blnResponse As Boolean = False, strMsg As String = ""
 
+        ''
+        objRacingDriver.MembershipNumber = txtMembershipNo.Text
+        objRacingDriver.Name = txtName.Text
+        objRacingDriver.Surname = txtSurname.Text
+        objRacingDriver.BirthDate = dteDateofBirth.Value
+        If radFemale.Checked = True Then
+            objRacingDriver.Gender = "Female"
+        ElseIf radMale.Checked = True Then
+            objRacingDriver.Gender = "Male"
+        End If
+        objRacingDriver.JoinDate = dteDateJoined.Value
+        objRacingDriver.MembershipFeeOutstanding = txtOutstandingFee.Text
+
+        ''
+        blnResponse = objRacingDriver.Create(strMsg:=strMsg)
+        If blnResponse = True Then
+            MessageBox.Show(strMsg, "Racing Driver: Create", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Else
+            MessageBox.Show(strMsg, "Racing Driver: Create", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End If
     End Sub
 
     Private Sub btnUpdate_Click(sender As Object, e As EventArgs) Handles btnUpdate.Click
