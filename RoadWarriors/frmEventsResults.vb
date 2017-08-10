@@ -1,11 +1,12 @@
 ﻿Public Class frmEventsResults
     ''
     Dim objConstants As New Constants()
+    Dim objEventResult As New EventResult()
 
 #Region "Main Controls"
     Private Sub frmEventsResults_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ''
-
+        dgvEventResults.DataSource = objEventResult.getEventsResults()
     End Sub
 
     Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
