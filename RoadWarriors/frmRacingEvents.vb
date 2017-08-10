@@ -1,16 +1,19 @@
 ﻿Public Class frmRacingEvents
     ''
     Dim objConstants As New Constants()
+    Dim objRacingEvent As New RacingEvent()
 
 #Region "Main Controls"
     Private Sub frmRacingEvents_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ''
+        dgvRacingEvents.DataSource = objRacingEvent.getRacingEvents()
 
     End Sub
 
     Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
         ''call the getExit method 
         objConstants.getExit(exitProgram:=CStr(True))
+
     End Sub
 
     Private Sub dgvRacingEvents_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvRacingEvents.CellContentClick
@@ -47,6 +50,7 @@
 #Region "File Menu Strip"
     Private Sub LoadAllEventsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadAllEventsToolStripMenuItem.Click
         ''
+        dgvRacingEvents.DataSource = objRacingEvent.getRacingEvents()
 
     End Sub
 
