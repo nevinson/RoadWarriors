@@ -1,11 +1,12 @@
 ﻿Public Class frmRacingDriver
     ''
     Dim objConstants As New Constants()
+    Dim objRacingDriver As New RacingDriver()
 
 #Region "Main Controls"
     Private Sub frmRacingDrivers_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        ''
-
+        ''call the generate membershipnumber when the form loads
+        txtMembershipNo.Text = objRacingDriver.getMembershipNumber(dteBirthDate:=dteDateofBirth.Value)
     End Sub
 
     Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
@@ -45,8 +46,8 @@
     End Sub
 
     Private Sub dteDateofBirth_ValueChanged(sender As Object, e As EventArgs) Handles dteDateofBirth.ValueChanged
-        ''
-
+        ''call the generate membershipnumber when date of birth changes
+        txtMembershipNo.Text = objRacingDriver.getMembershipNumber(dteBirthDate:=dteDateofBirth.Value)
     End Sub
 #End Region
 
