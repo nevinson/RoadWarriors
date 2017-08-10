@@ -1,12 +1,17 @@
-﻿Public Class RacingDriver
+﻿Imports System.Data.OleDb
+Imports System.IO
+
+Public Class RacingDriver
     ''
     Private strMembershipNumber As String
     Private strName As String
     Private strSurname As String
-    Private dteBirthDate As System.DateTime
+    Private dteBirthDate As DateTime
     Private strGender As String
-    Private dteJoinDate As System.DateTime
+    Private dteJoinDate As DateTime
     Private decOutstandingFee As Decimal
+
+    Private objConstants As New Constants()
 
 #Region "Properties"
     Public Property MembershipNumber() As String
@@ -76,37 +81,119 @@
 #Region "Membership Number Methods"
     Private Function MembershipNoExist(ByVal strMembershipNumber As String) As Boolean
         ''
-        Return Nothing
+        Dim dbCon As New OleDbConnection()
+        Dim dbDA As New OleDbDataAdapter()
+        Dim dbDS As New DataSet()
+        Dim blResult As Boolean = False
+
+        Try
+            dbCon.ConnectionString = objConstants.ConnectionString()
+            dbCon.Open()
+
+            Dim dbCmd As New OleDbCommand("SELECT * FROM [RacingDrivers.csv] WHERE MembershipNumber=@memberNumber", dbCon)
+            dbCmd.Parameters.AddWithValue("@memberNum", strMembershipNumber)
+
+            dbDA.SelectCommand = dbCmd
+            dbDA.Fill(dbDS)
+
+            dbDA.Dispose()
+
+            If dbDS.Tables(0).Rows.Count = 0 Then
+                blResult = True
+            Else
+                blResult = False
+            End If
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        Finally
+            dbCon.Close()
+        End Try
+
+        Return blResult
     End Function
 
     Public Function MemebershipNoValid(ByVal strMembershipNumber As String) As Boolean
-        ''
-        Return Nothing
+        ''validate membership number and return a true/false
+        Dim intTotal As Integer = 0
+        Dim n As Integer = 0
+        Dim r As Integer = 0
+
+        For Each num In strMembershipNumber
+            If Integer.TryParse(num, n) Then
+                intTotal += n
+            End If
+        Next
+
+        r = intTotal Mod 10
+
+        If r = 0 Then
+            Return True
+        Else
+            Return False
+        End If
     End Function
 
     Public Function getMembershipNumber(ByVal dteBirthDate As Date) As String
-        ''
-        Return Nothing
+        ''return the membership number
+        Dim strNumber As String = Nothing
+        Dim strMembershipNumber As String = Nothing
+
+        strNumber = String.Format("{0}{1}{2}", getYear(), getBirthDate(dteBirthDate:=dteBirthDate), getRandom()) ''
+
+        strMembershipNumber = strNumber & getCheckDigit(strNumber)
+
+        Return strMembershipNumber
     End Function
 
     Private Function getCheckDigit(ByVal strNumber As String) As Integer
-        ''
-        Return Nothing
+        ''calculate and return the check digit
+        Dim intTotal As Integer = 0
+        Dim n As Integer = 0
+        Dim r As Integer = 0
+
+        For Each num In strNumber
+            If Integer.TryParse(num, n) Then
+                intTotal += n
+            End If
+        Next
+
+        r = intTotal Mod 10
+
+        If r = 0 Then
+            Return 0
+        Else
+            Return 10 - r
+        End If
     End Function
 
     Private Function getRandom() As String
-        ''
-        Return Nothing
+        ''generate and return a random number between 000 and 999
+        Randomize()
+
+        Dim intRandom As Integer = 0
+        Dim strRandom As String = Nothing
+
+        intRandom = CInt((999 * Rnd()) + 1)
+
+        If intRandom.ToString().Length = 1 Then
+            strRandom = String.Format("00{0}", intRandom.ToString())
+        ElseIf intRandom.ToString().Length = 2 Then
+            strRandom = String.Format("0{0}", intRandom.ToString())
+        ElseIf intRandom.ToString().Length = 3 Then
+            strRandom = intRandom.ToString()
+        End If
+
+        Return strRandom
     End Function
 
     Private Function getYear() As String
-        ''
-        Return Nothing
+        ''return the current year's 2 rightmost digits
+        Return DateTime.Now.ToString("yy")
     End Function
 
     Private Function getBirthDate(ByVal dteBirthDate As Date) As String
-        ''
-        Return Nothing
+        ''format and return the birthdate 
+        Return dteBirthDate.ToString("yyyyMMdd")
     End Function
 #End Region
 
