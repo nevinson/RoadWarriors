@@ -264,7 +264,27 @@ Public Class RacingDriver
 
     Public Function Search(ByVal strSearch As String, ByRef strMsg As String) As DataTable
         ''
-        Return Nothing
+        Dim dbCon As New OleDbConnection()
+        Dim dbDA As New OleDbDataAdapter()
+        Dim dbDS As New DataSet()
+
+        Try
+            dbCon.ConnectionString = objConstants.ConnectionString()
+            dbCon.Open()
+
+            Dim dbCmd As New OleDbCommand("SELECT * FROM [RacingDrivers.csv] WHERE MembershipNumber=@memberNumber", dbCon)
+            dbCmd.Parameters.AddWithValue("@memberNum", strSearch)
+
+            dbDA.SelectCommand = dbCmd
+            dbDA.Fill(dbDS)
+            dbDA.Dispose()
+        Catch ex As Exception
+            strMsg = ex.Message
+        Finally
+            dbCon.Close()
+        End Try
+
+        Return dbDS.Tables(0)
     End Function
 #End Region
 End Class

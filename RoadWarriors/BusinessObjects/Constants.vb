@@ -2,7 +2,7 @@
 
     Public Function RacingDriverFileLocation() As String
         ''
-        Return Application.StartupPath & "/DataStorage/RacingDrivers.csv"
+        Return Application.StartupPath & "/DataStorage"
     End Function
 
     Public Function RacingEventsFileLocation() As String
