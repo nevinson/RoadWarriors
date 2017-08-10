@@ -33,7 +33,22 @@
 
     Private Sub btnCreate_Click(sender As Object, e As EventArgs) Handles btnCreate.Click
         ''
+        Dim blnResponse As Boolean = False, strMsg As String = ""
 
+        ''
+        objRacingEvent.EventTitle = txtTitle.Text
+        objRacingEvent.EventDate = dteDateofEvent.Value
+        objRacingEvent.RegistrationFee = txtRegistrationFee.Text
+        objRacingEvent.EventLocation = txtEventLocation.Text
+        objRacingEvent.NumberOfLaps = txtNumberofLaps.Text
+
+        ''
+        blnResponse = objRacingEvent.Create(strMsg:=strMsg)
+        If blnResponse = True Then
+            MessageBox.Show(strMsg, "Racing Event: Create", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Else
+            MessageBox.Show(strMsg, "Racing Event: Create", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End If
     End Sub
 
     Private Sub btnUpdate_Click(sender As Object, e As EventArgs) Handles btnUpdate.Click

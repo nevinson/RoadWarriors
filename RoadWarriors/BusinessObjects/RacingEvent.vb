@@ -86,7 +86,32 @@ Public Class RacingEvent
 
     Public Function Create(ByRef strMsg As String) As Boolean
         ''
-        Return Nothing
+        Dim blnResult As Boolean = False
+        Dim strLine As String = ""
+
+        If File.Exists(objConstants.RacingEventsFileLocation()) Then
+            Try
+                Dim objWriter As StreamWriter = File.AppendText(objConstants.RacingEventsFileLocation())
+
+                strLine = String.Format("{0}, {1}, {2}, {3}, {4}", EventTitle, EventDate, RegistrationFee, EventLocation, NumberOfLaps)
+
+                objWriter.Write(strLine)
+                objWriter.Write(Environment.NewLine)
+                objWriter.Close()
+
+                strMsg = "Record saved successfully!"
+                blnResult = True
+
+            Catch ex As Exception
+                strMsg = ex.Message
+                blnResult = False
+            End Try
+        Else
+            strMsg = "Racing events data file does not exist."
+            blnResult = False
+        End If
+
+        Return blnResult
     End Function
 
     Public Function Search(ByVal strSearch As String, ByRef strMsg As String) As DataTable

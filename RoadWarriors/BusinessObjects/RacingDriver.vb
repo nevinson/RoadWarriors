@@ -227,9 +227,9 @@ Public Class RacingDriver
         Dim blnResult As Boolean = False
         Dim strLine As String = ""
 
-        If File.Exists(objConstants.RacingDriverFileLocation) Then
+        If File.Exists(objConstants.RacingDriverFileLocation()) Then
             Try
-                Dim objWriter As StreamWriter = File.AppendText(objConstants.RacingDriverFileLocation)
+                Dim objWriter As StreamWriter = File.AppendText(objConstants.RacingDriverFileLocation())
 
                 strLine = String.Format("{0}, {1}, {2}, {3}, {4}, {5}, {6}", MembershipNumber, Name, Surname, BirthDate, Gender, JoinDate, MembershipFeeOutstanding)
 
