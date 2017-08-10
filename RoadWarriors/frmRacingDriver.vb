@@ -7,6 +7,10 @@
     Private Sub frmRacingDrivers_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ''call the generate membershipnumber when the form loads
         txtMembershipNo.Text = objRacingDriver.getMembershipNumber(dteBirthDate:=dteDateofBirth.Value)
+
+        ''load all racing driver records on form load
+        dgvRacingDrivers.DataSource = objRacingDriver.getRacingDrivers()
+
     End Sub
 
     Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
@@ -53,7 +57,8 @@
 
 #Region "File Menu STrip"
     Private Sub LoadAllDriversToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadAllDriversToolStripMenuItem.Click
-        ''
+        ''load all racing driver records
+        dgvRacingDrivers.DataSource = objRacingDriver.getRacingDrivers()
 
     End Sub
 
