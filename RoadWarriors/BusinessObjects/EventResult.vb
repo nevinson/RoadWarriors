@@ -83,6 +83,30 @@ Public Class EventResult
         Return dbDS.Tables(0)
     End Function
 
+    Public Function getEventsTitles() As DataTable
+        ''
+        Dim dbCon As New OleDbConnection()
+        Dim dbDA As New OleDbDataAdapter()
+        Dim dbDS As New DataSet()
+
+        Try
+            dbCon.ConnectionString = objConstants.ConnectionString()
+            dbCon.Open()
+
+            Dim dbCmd As New OleDbCommand("SELECT EventTitle FROM [RacingEvents.csv]", dbCon)
+
+            dbDA.SelectCommand = dbCmd
+            dbDA.Fill(dbDS)
+            dbDA.Dispose()
+        Catch ex As Exception
+            MessageBox.Show("Cannot access data file:" + ex.Message, "Data Access Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Finally
+            dbCon.Close()
+        End Try
+
+        Return dbDS.Tables(0)
+    End Function
+
     Public Function Create(ByRef strMsg As String) As Boolean
         ''
         Return Nothing

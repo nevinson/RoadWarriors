@@ -7,6 +7,11 @@
     Private Sub frmEventsResults_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ''
         dgvEventResults.DataSource = objEventResult.getEventsResults()
+
+        ''
+        cmbEventTitle.DataSource = objEventResult.getEventsTitles()
+        cmbEventTitle.ValueMember = "EventTitle"
+        cmbEventTitle.DisplayMember = "EventTitle"
     End Sub
 
     Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
