@@ -12,6 +12,12 @@
         cmbEventTitle.DataSource = objEventResult.getEventsTitles()
         cmbEventTitle.ValueMember = "EventTitle"
         cmbEventTitle.DisplayMember = "EventTitle"
+
+        ''
+        cmbRacerName.DataSource = objEventResult.getRacerName()
+        cmbRacerName.ValueMember = "MembershipNumber"
+        cmbRacerName.DisplayMember = "Name"
+
     End Sub
 
     Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
