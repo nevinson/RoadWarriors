@@ -15,7 +15,7 @@
 
         ''
         cmbRacerName.DataSource = objEventResult.getRacerName()
-        cmbRacerName.ValueMember = "MembershipNumber"
+        cmbRacerName.ValueMember = "Name"
         cmbRacerName.DisplayMember = "Name"
 
     End Sub
@@ -27,7 +27,11 @@
 
     Private Sub cmbRacerName_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbRacerName.SelectedIndexChanged
         ''
-
+        Try
+            txtRacerSurname.Text = objEventResult.getRacerDetails(cmbRacerName.SelectedValue.ToString())
+        Catch ex As Exception
+            'MsgBox(ex.Message)
+        End Try
     End Sub
 
     Private Sub txtSearch_TextChanged(sender As Object, e As EventArgs) Handles txtSearch.TextChanged
@@ -42,7 +46,21 @@
 
     Private Sub btnCreate_Click(sender As Object, e As EventArgs) Handles btnCreate.Click
         ''
+        Dim blnResponse As Boolean = False, strMsg As String = ""
 
+        ''
+        objEventResult.EventTitle = cmbEventTitle.SelectedValue
+        objEventResult.RacerName = cmbRacerName.SelectedValue
+        objEventResult.RacerSurname = txtRacerSurname.Text
+        objEventResult.Position = txtPosition.Text
+        objEventResult.EventDate = dteEventDate.Value
+
+        blnResponse = objEventResult.Create(strMsg:=strMsg)
+        If blnResponse = True Then
+            MessageBox.Show(strMsg, "Events Results: Create", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Else
+            MessageBox.Show(strMsg, "Events Results: Create", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End If
     End Sub
 #End Region
 

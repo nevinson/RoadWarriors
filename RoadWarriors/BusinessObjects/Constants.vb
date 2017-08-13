@@ -12,7 +12,7 @@
 
     Public Function EventsResultsFileLocation() As String
         ''
-        Return Application.StartupPath & "/DataStorage/EventsResults.csv"
+        Return Application.StartupPath & "/DataStorage/EventResults.csv"
     End Function
 
     Public Function ConnectionString() As String

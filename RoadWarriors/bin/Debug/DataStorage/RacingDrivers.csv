@@ -1,4 +1,4 @@
-﻿MembershipNumber, Name,Surname, BirthDate, Gender, JoinDate, MembershipFeeOutstanding
+﻿MembershipNumber, Name, Surname, BirthDate, Gender, JoinDate, MembershipFeeOutstanding
 17198003104466, Thabo, Mooki, 1980/03/10 00:00:00, Male, 2017/05/06 10:07:15, 0.00
 17197008257085, Thandiswa, Mazwai, 1970/08/25 00:00:00, Female, 2017/05/06 13:40:32, 20.00
 17197212055802, Christina, Jade, 1972/12/05 00:00:00, Female, 2017/06/12 11:20:52, 0.00
