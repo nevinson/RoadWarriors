@@ -75,7 +75,28 @@
 
     Private Sub btnUpdate_Click(sender As Object, e As EventArgs) Handles btnUpdate.Click
         ''
+        Dim blnResponse As Boolean = False, strMsg As String = ""
 
+        ''
+        objRacingDriver.MembershipNumber = txtMembershipNo.Text
+        objRacingDriver.Name = txtName.Text
+        objRacingDriver.Surname = txtSurname.Text
+        objRacingDriver.BirthDate = dteDateofBirth.Value
+        If radFemale.Checked = True Then
+            objRacingDriver.Gender = "Female"
+        ElseIf radMale.Checked = True Then
+            objRacingDriver.Gender = "Male"
+        End If
+        objRacingDriver.JoinDate = dteDateJoined.Value
+        objRacingDriver.MembershipFeeOutstanding = txtOutstandingFee.Text
+
+        ''calling the create method
+        blnResponse = objRacingDriver.Update(strMsg:=strMsg)
+        If blnResponse = True Then
+            MessageBox.Show(strMsg, "Racing Driver: Create", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Else
+            MessageBox.Show(strMsg, "Racing Driver: Create", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End If
     End Sub
 
     Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
@@ -86,7 +107,25 @@
 
     Private Sub dgvRacingDrivers_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvRacingDrivers.CellContentClick
         ''
+        Dim i As Integer = 0
 
+        i = dgvRacingDrivers.CurrentRow.Index
+
+        txtMembershipNo.Text = CStr(dgvRacingDrivers.Item(0, i).Value)
+        txtName.Text = CStr(dgvRacingDrivers.Item(1, i).Value)
+        txtSurname.Text = CStr(dgvRacingDrivers.Item(2, i).Value)
+        dteDateofBirth.Value = CDate(dgvRacingDrivers.Item(3, i).Value)
+        If CStr(dgvRacingDrivers.Item(4, i).Value) = "Female" Then
+            radFemale.Checked = True
+        ElseIf CStr(dgvRacingDrivers.Item(4, i).Value) = "Male" Then
+            radMale.Checked = True
+        End If
+        dteDateJoined.Value = CDate(dgvRacingDrivers.Item(5, i).Value)
+        txtOutstandingFee.Text = CStr(dgvRacingDrivers.Item(6, i).Value)
+
+        ''
+        btnDelete.Enabled = True
+        btnUpdate.Enabled = True
     End Sub
 
     Private Sub dteDateofBirth_ValueChanged(sender As Object, e As EventArgs) Handles dteDateofBirth.ValueChanged

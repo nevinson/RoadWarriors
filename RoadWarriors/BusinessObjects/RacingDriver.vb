@@ -254,6 +254,40 @@ Public Class RacingDriver
 
     Public Function Update(ByRef strMsg As String) As Boolean
         ''
+        Dim blnResult As Boolean = False
+
+        ''
+        Dim dbCon As New OleDbConnection()
+        Dim dbDA As New OleDbDataAdapter()
+        Dim dbDS As New DataSet()
+
+        Try
+            dbCon.ConnectionString = objConstants.ConnectionString()
+            dbCon.Open()
+
+            Dim dbCmd As New OleDbCommand("UPDATE [RacingDrivers.csv] SET Name=@name, Surname=@surname, BirthDate=@birthdate, Gender=@gender, JoinDate=@joinDate, MembershipFeeOutstanding=@fee WHERE MembershipNumber=@memberNo", dbCon)
+
+            dbCmd.Parameters.AddWithValue("@name", Name)
+            dbCmd.Parameters.AddWithValue("@surname", Surname)
+            dbCmd.Parameters.AddWithValue("@birthdate", BirthDate)
+            dbCmd.Parameters.AddWithValue("@gender", Gender)
+            dbCmd.Parameters.AddWithValue("@joinDate", JoinDate)
+            dbCmd.Parameters.AddWithValue("@fee", MembershipFeeOutstanding)
+            dbCmd.Parameters.AddWithValue("@memberNum", MembershipNumber)
+
+            Dim res As Integer = dbCmd.ExecuteNonQuery()
+            If res = 1 Then
+                strMsg = "Record updated successfully!"
+                blnResult = True
+            Else
+                strMsg = "Error: Record not updated!"
+                blnResult = False
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Cannot access data file:" + ex.Message, "Data Access Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Finally
+            dbCon.Close()
+        End Try
         Return Nothing
     End Function
 
