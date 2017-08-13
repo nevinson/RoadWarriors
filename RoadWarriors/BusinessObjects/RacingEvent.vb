@@ -114,6 +114,42 @@ Public Class RacingEvent
         Return blnResult
     End Function
 
+    Public Function Update(ByRef strMsg As String) As Boolean
+        ''
+        Dim blnResult As Boolean = False
+        Dim dbCon As New OleDbConnection()
+        Dim dbDA As New OleDbDataAdapter()
+        Dim dbDS As New DataSet()
+
+        Try
+            dbCon.ConnectionString = objConstants.ConnectionString()
+            dbCon.Open()
+
+            Dim dbCmd As New OleDbCommand("UPDATE [RacingDrivers.csv] SET EventDate=@date, RegistrationFee=@fee, EventLocation=@location, NumberOfLaps=@laps WHERE EventTitle=@title", dbCon)
+
+            dbCmd.Parameters.AddWithValue("@date", EventDate)
+            dbCmd.Parameters.AddWithValue("@fee", RegistrationFee)
+            dbCmd.Parameters.AddWithValue("@location", EventLocation)
+            dbCmd.Parameters.AddWithValue("@laps", NumberOfLaps)
+            dbCmd.Parameters.AddWithValue("@title", EventTitle)
+
+            Dim res As Integer = dbCmd.ExecuteNonQuery()
+            If res = 1 Then
+                strMsg = "Record updated successfully!"
+                blnResult = True
+            Else
+                strMsg = "Error: Record not updated!"
+                blnResult = False
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Cannot access data file:" + ex.Message, "Data Access Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Finally
+            dbCon.Close()
+        End Try
+
+        Return blnResult
+    End Function
+
     Public Function Search(ByVal strSearch As String, ByRef strMsg As String) As DataTable
         ''
         Dim dbCon As New OleDbConnection()
