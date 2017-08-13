@@ -36,12 +36,29 @@
 
     Private Sub txtSearch_TextChanged(sender As Object, e As EventArgs) Handles txtSearch.TextChanged
         ''
-
+        If txtSearch.Text.Length < 3 Then
+            btnSearch.Enabled = False
+        Else
+            btnSearch.Enabled = True
+        End If
     End Sub
 
     Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         ''
+        Dim dtResult As DataTable = Nothing
+        Dim strSearch As String = txtSearch.Text
+        Dim strMsg As String = Nothing
 
+        ''
+        dtResult = objEventResult.Search(strSearch:=strSearch, strMsg:=strMsg)
+
+        ''
+        If dtResult.Rows.Count > 0 Then
+            MessageBox.Show(dtResult.Rows.Count & " record(s) found.", "Racing Driver: Search", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            dgvEventResults.DataSource = dtResult
+        Else
+            MessageBox.Show("Error: No racing driver exists of that name.", "Racing Driver: Search", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End If
     End Sub
 
     Private Sub btnCreate_Click(sender As Object, e As EventArgs) Handles btnCreate.Click
@@ -67,7 +84,7 @@
 #Region "File Menu Strip"
     Private Sub ReloadResultsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ReloadResultsToolStripMenuItem.Click
         ''
-
+        dgvEventResults.DataSource = objEventResult.getEventsResults()
     End Sub
 
     Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
