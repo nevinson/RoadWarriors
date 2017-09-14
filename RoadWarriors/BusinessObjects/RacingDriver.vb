@@ -225,29 +225,39 @@ Public Class RacingDriver
     Public Function Create(ByRef strMsg As String) As Boolean
         ''
         Dim blnResult As Boolean = False
-        Dim strLine As String = ""
 
-        If File.Exists(objConstants.RacingDriverFileLocation()) Then
-            Try
-                Dim objWriter As StreamWriter = File.AppendText(objConstants.RacingDriverFileLocation())
+        ''
+        Dim dbCon As New OleDbConnection()
+        Dim dbDA As New OleDbDataAdapter()
+        Dim dbDS As New DataSet()
 
-                strLine = String.Format("{0}, {1}, {2}, {3}, {4}, {5}, {6}", MembershipNumber, Name, Surname, BirthDate, Gender, JoinDate, MembershipFeeOutstanding)
+        Try
+            dbCon.ConnectionString = objConstants.ConnectionString()
+            dbCon.Open()
 
-                objWriter.Write(strLine)
-                objWriter.Write(Environment.NewLine)
-                objWriter.Close()
+            Dim dbCmd As New OleDbCommand("INSERT INTO RacingDrivers (MembershipNumber, Name, Surname, BirthDate, Gender, JoinDate, MembershipFeeOutstanding) VALUES (@memberNo, @name, @surname, @birthdate, @gender, @joinDate, @fee)", dbCon)
 
-                strMsg = "Record saved successfully!"
+            dbCmd.Parameters.AddWithValue("@memberNo", MembershipNumber)
+            dbCmd.Parameters.AddWithValue("@name", Name)
+            dbCmd.Parameters.AddWithValue("@surname", Surname)
+            dbCmd.Parameters.AddWithValue("@birthdate", BirthDate)
+            dbCmd.Parameters.AddWithValue("@gender", Gender)
+            dbCmd.Parameters.AddWithValue("@joinDate", JoinDate)
+            dbCmd.Parameters.AddWithValue("@fee", MembershipFeeOutstanding)
+
+            Dim res As Integer = dbCmd.ExecuteNonQuery()
+            If res = 1 Then
+                strMsg = "Record created successfully!"
                 blnResult = True
-
-            Catch ex As Exception
-                strMsg = ex.Message
+            Else
+                strMsg = "Error: Record not created!"
                 blnResult = False
-            End Try
-        Else
-            strMsg = "Racing drivers data file does not exist."
-            blnResult = False
-        End If
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Error:" + ex.Message, "Data Access Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Finally
+            dbCon.Close()
+        End Try
 
         Return blnResult
     End Function
@@ -265,7 +275,7 @@ Public Class RacingDriver
             dbCon.ConnectionString = objConstants.ConnectionString()
             dbCon.Open()
 
-            Dim dbCmd As New OleDbCommand("UPDATE [RacingDrivers.csv] SET Name=@name, Surname=@surname, BirthDate=@birthdate, Gender=@gender, JoinDate=@joinDate, MembershipFeeOutstanding=@fee WHERE MembershipNumber=@memberNo", dbCon)
+            Dim dbCmd As New OleDbCommand("UPDATE RacingDrivers SET Name=@name, Surname=@surname, BirthDate=@birthdate, Gender=@gender, JoinDate=@joinDate, MembershipFeeOutstanding=@fee WHERE MembershipNumber=@memberNo", dbCon)
 
             dbCmd.Parameters.AddWithValue("@name", Name)
             dbCmd.Parameters.AddWithValue("@surname", Surname)
@@ -273,7 +283,7 @@ Public Class RacingDriver
             dbCmd.Parameters.AddWithValue("@gender", Gender)
             dbCmd.Parameters.AddWithValue("@joinDate", JoinDate)
             dbCmd.Parameters.AddWithValue("@fee", MembershipFeeOutstanding)
-            dbCmd.Parameters.AddWithValue("@memberNum", MembershipNumber)
+            dbCmd.Parameters.AddWithValue("@memberNo", MembershipNumber)
 
             Dim res As Integer = dbCmd.ExecuteNonQuery()
             If res = 1 Then
@@ -284,11 +294,10 @@ Public Class RacingDriver
                 blnResult = False
             End If
         Catch ex As Exception
-            MessageBox.Show("Cannot access data file:" + ex.Message, "Data Access Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Error:" + ex.Message, "Data Access Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
             dbCon.Close()
         End Try
-        Return Nothing
     End Function
 
     Public Function Delete(ByRef strMsg As String) As Boolean

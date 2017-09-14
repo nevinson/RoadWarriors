@@ -93,9 +93,9 @@
         ''calling the create method
         blnResponse = objRacingDriver.Update(strMsg:=strMsg)
         If blnResponse = True Then
-            MessageBox.Show(strMsg, "Racing Driver: Create", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            MessageBox.Show(strMsg, "Racing Driver: Update", MessageBoxButtons.OK, MessageBoxIcon.Information)
         Else
-            MessageBox.Show(strMsg, "Racing Driver: Create", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show(strMsg, "Racing Driver: Update", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End If
     End Sub
 
@@ -111,17 +111,17 @@
 
         i = dgvRacingDrivers.CurrentRow.Index
 
-        txtMembershipNo.Text = CStr(dgvRacingDrivers.Item(0, i).Value)
-        txtName.Text = CStr(dgvRacingDrivers.Item(1, i).Value)
-        txtSurname.Text = CStr(dgvRacingDrivers.Item(2, i).Value)
-        dteDateofBirth.Value = CDate(dgvRacingDrivers.Item(3, i).Value)
-        If CStr(dgvRacingDrivers.Item(4, i).Value) = "Female" Then
+        txtMembershipNo.Text = CStr(dgvRacingDrivers.Item(1, i).Value)
+        txtName.Text = CStr(dgvRacingDrivers.Item(2, i).Value)
+        txtSurname.Text = CStr(dgvRacingDrivers.Item(3, i).Value)
+        dteDateofBirth.Value = CDate(dgvRacingDrivers.Item(4, i).Value)
+        If CStr(dgvRacingDrivers.Item(5, i).Value) = "Female" Then
             radFemale.Checked = True
-        ElseIf CStr(dgvRacingDrivers.Item(4, i).Value) = "Male" Then
+        ElseIf CStr(dgvRacingDrivers.Item(5, i).Value) = "Male" Then
             radMale.Checked = True
         End If
-        dteDateJoined.Value = CDate(dgvRacingDrivers.Item(5, i).Value)
-        txtOutstandingFee.Text = CStr(dgvRacingDrivers.Item(6, i).Value)
+        dteDateJoined.Value = CDate(dgvRacingDrivers.Item(6, i).Value)
+        txtOutstandingFee.Text = CStr(dgvRacingDrivers.Item(7, i).Value)
 
         ''
         btnDelete.Enabled = True
