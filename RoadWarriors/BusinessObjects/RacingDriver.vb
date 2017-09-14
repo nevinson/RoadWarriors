@@ -208,7 +208,7 @@ Public Class RacingDriver
             dbCon.ConnectionString = objConstants.ConnectionString()
             dbCon.Open()
 
-            Dim dbCmd As New OleDbCommand("SELECT * FROM [RacingDrivers.csv]", dbCon)
+            Dim dbCmd As New OleDbCommand("SELECT * FROM RacingDrivers", dbCon)
 
             dbDA.SelectCommand = dbCmd
             dbDA.Fill(dbDS)

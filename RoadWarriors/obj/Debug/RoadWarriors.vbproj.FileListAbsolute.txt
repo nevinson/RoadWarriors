@@ -11,3 +11,16 @@ D:\My Stuff\MyProjects\RoadWarriors\RoadWarriors\obj\Debug\RoadWarriors.pdb
 D:\My Stuff\MyProjects\RoadWarriors\RoadWarriors\obj\Debug\RoadWarriors.frmRacingDriver.resources
 D:\My Stuff\MyProjects\RoadWarriors\RoadWarriors\obj\Debug\RoadWarriors.frmRacingEvents.resources
 D:\My Stuff\MyProjects\RoadWarriors\RoadWarriors\obj\Debug\RoadWarriors.frmEventsResults.resources
+D:\My Stuff\MyProjects\MpiloAssignment\RoadWarriors\RoadWarriors\bin\Debug\RoadWarriors.exe.config
+D:\My Stuff\MyProjects\MpiloAssignment\RoadWarriors\RoadWarriors\bin\Debug\RoadWarriors.exe
+D:\My Stuff\MyProjects\MpiloAssignment\RoadWarriors\RoadWarriors\bin\Debug\RoadWarriors.pdb
+D:\My Stuff\MyProjects\MpiloAssignment\RoadWarriors\RoadWarriors\bin\Debug\RoadWarriors.xml
+D:\My Stuff\MyProjects\MpiloAssignment\RoadWarriors\RoadWarriors\obj\Debug\RoadWarriors.vbprojResolveAssemblyReference.cache
+D:\My Stuff\MyProjects\MpiloAssignment\RoadWarriors\RoadWarriors\obj\Debug\RoadWarriors.frmEventsResults.resources
+D:\My Stuff\MyProjects\MpiloAssignment\RoadWarriors\RoadWarriors\obj\Debug\RoadWarriors.frmRacingDriver.resources
+D:\My Stuff\MyProjects\MpiloAssignment\RoadWarriors\RoadWarriors\obj\Debug\RoadWarriors.frmRacingEvents.resources
+D:\My Stuff\MyProjects\MpiloAssignment\RoadWarriors\RoadWarriors\obj\Debug\RoadWarriors.Resources.resources
+D:\My Stuff\MyProjects\MpiloAssignment\RoadWarriors\RoadWarriors\obj\Debug\RoadWarriors.vbproj.GenerateResource.Cache
+D:\My Stuff\MyProjects\MpiloAssignment\RoadWarriors\RoadWarriors\obj\Debug\RoadWarriors.exe
+D:\My Stuff\MyProjects\MpiloAssignment\RoadWarriors\RoadWarriors\obj\Debug\RoadWarriors.xml
+D:\My Stuff\MyProjects\MpiloAssignment\RoadWarriors\RoadWarriors\obj\Debug\RoadWarriors.pdb

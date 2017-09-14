@@ -17,7 +17,7 @@
 
     Public Function ConnectionString() As String
         ''
-        Return "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" & Application.StartupPath & "/DataStorage;Extended Properties='text;HDR=Yes;FMT=Delimited;CharacterSet=65001;'"
+        Return "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" & Application.StartupPath & "/DataStorage/RoadWarriors.accdb"
     End Function
 
     Public Sub getExit(ByRef exitProgram As String)
