@@ -268,14 +268,15 @@ Public Class RacingDriver
 
         ''
         Dim dbCon As New OleDbConnection()
-        Dim dbDA As New OleDbDataAdapter()
-        Dim dbDS As New DataSet()
 
         Try
             dbCon.ConnectionString = objConstants.ConnectionString()
             dbCon.Open()
 
-            Dim dbCmd As New OleDbCommand("UPDATE RacingDrivers SET Name=@name, Surname=@surname, BirthDate=@birthdate, Gender=@gender, JoinDate=@joinDate, MembershipFeeOutstanding=@fee WHERE MembershipNumber=@memberNo", dbCon)
+            Dim dbCmd As New OleDbCommand()
+
+            dbCmd.Connection = dbCon
+            dbCmd.CommandText = "UPDATE RacingDrivers SET Name=@name, Surname=@surname, BirthDate=@birthdate, Gender=@gender, JoinDate=@joinDate, MembershipFeeOutstanding=@fee WHERE MembershipNumber=@memberNo"
 
             dbCmd.Parameters.AddWithValue("@name", Name)
             dbCmd.Parameters.AddWithValue("@surname", Surname)
@@ -285,8 +286,7 @@ Public Class RacingDriver
             dbCmd.Parameters.AddWithValue("@fee", MembershipFeeOutstanding)
             dbCmd.Parameters.AddWithValue("@memberNo", MembershipNumber)
 
-            Dim res As Integer = dbCmd.ExecuteNonQuery()
-            If res = 1 Then
+            If dbCmd.ExecuteNonQuery() Then
                 strMsg = "Record updated successfully!"
                 blnResult = True
             Else
@@ -294,10 +294,12 @@ Public Class RacingDriver
                 blnResult = False
             End If
         Catch ex As Exception
-            MessageBox.Show("Error:" + ex.Message, "Data Access Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Error:" + ex.ToString(), "Data Access Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
             dbCon.Close()
         End Try
+
+        Return blnResult
     End Function
 
     Public Function Delete(ByRef strMsg As String) As Boolean
