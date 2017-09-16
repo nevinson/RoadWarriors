@@ -101,7 +101,18 @@
 
     Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
         ''
+        Dim blnResponse As Boolean = False, strMsg As String = ""
 
+        ''
+        objRacingDriver.MembershipNumber = txtMembershipNo.Text
+
+        ''calling the create method
+        blnResponse = objRacingDriver.Delete(strMsg:=strMsg)
+        If blnResponse = True Then
+            MessageBox.Show(strMsg, "Racing Driver: Update", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Else
+            MessageBox.Show(strMsg, "Racing Driver: Update", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End If
     End Sub
 
 

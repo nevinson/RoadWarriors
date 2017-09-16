@@ -304,7 +304,36 @@ Public Class RacingDriver
 
     Public Function Delete(ByRef strMsg As String) As Boolean
         ''
-        Return Nothing
+        Dim blnResult As Boolean = False
+
+        ''
+        Dim dbCon As New OleDbConnection()
+
+        Try
+            dbCon.ConnectionString = objConstants.ConnectionString()
+            dbCon.Open()
+
+            Dim dbCmd As New OleDbCommand()
+
+            dbCmd.Connection = dbCon
+            dbCmd.CommandText = "DELETE FROM RacingDrivers WHERE MembershipNumber=@memberNo"
+
+            dbCmd.Parameters.AddWithValue("@memberNo", MembershipNumber)
+
+            If dbCmd.ExecuteNonQuery() Then
+                strMsg = "Record updated successfully!"
+                blnResult = True
+            Else
+                strMsg = "Error: Record not updated!"
+                blnResult = False
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Error:" + ex.ToString(), "Data Access Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Finally
+            dbCon.Close()
+        End Try
+
+        Return blnResult
     End Function
 
     Public Function Search(ByVal strSearch As String, ByRef strMsg As String) As DataTable
@@ -317,8 +346,8 @@ Public Class RacingDriver
             dbCon.ConnectionString = objConstants.ConnectionString()
             dbCon.Open()
 
-            Dim dbCmd As New OleDbCommand("SELECT * FROM [RacingDrivers.csv] WHERE MembershipNumber=@memberNumber", dbCon)
-            dbCmd.Parameters.AddWithValue("@memberNum", strSearch)
+            Dim dbCmd As New OleDbCommand("SELECT * FROM RacingDrivers WHERE MembershipNumber=@memberNo", dbCon)
+            dbCmd.Parameters.AddWithValue("@memberNo", strSearch)
 
             dbDA.SelectCommand = dbCmd
             dbDA.Fill(dbDS)
