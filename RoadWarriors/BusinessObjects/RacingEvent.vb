@@ -5,7 +5,7 @@ Public Class RacingEvent
     ''
     Private strEventTitle As String
     Private dteEventDate As DateTime
-    Private decRegistrationFee As Decimal
+    Private dblRegistrationFee As Double
     Private strEventLocation As String
     Private intNumberOfLaps As Integer
 
@@ -30,12 +30,12 @@ Public Class RacingEvent
         End Set
     End Property
 
-    Public Property RegistrationFee() As Decimal
+    Public Property RegistrationFee() As Double
         Get
-            Return decRegistrationFee
+            Return dblRegistrationFee
         End Get
-        Set(ByVal value As Decimal)
-            decRegistrationFee = value
+        Set(ByVal value As Double)
+            dblRegistrationFee = value
         End Set
     End Property
 
@@ -70,7 +70,7 @@ Public Class RacingEvent
 
             dbCon.Open()
 
-            Dim dbCmd As New OleDbCommand("SELECT * FROM [RacingEvents.csv]", dbCon)
+            Dim dbCmd As New OleDbCommand("SELECT * FROM RacingEvents", dbCon)
 
             dbDA.SelectCommand = dbCmd
             dbDA.Fill(dbDS)
@@ -85,38 +85,43 @@ Public Class RacingEvent
     End Function
 
     Public Function Create(ByRef strMsg As String) As Boolean
-        ''
         Dim blnResult As Boolean = False
-        Dim strLine As String = ""
 
-        If File.Exists(objConstants.RacingEventsFileLocation()) Then
-            Try
-                Dim objWriter As StreamWriter = File.AppendText(objConstants.RacingEventsFileLocation())
+        Dim dbCon As New OleDbConnection()
+        Dim dbDA As New OleDbDataAdapter()
 
-                strLine = String.Format("{0}, {1}, {2}, {3}, {4}", EventTitle, EventDate, RegistrationFee, EventLocation, NumberOfLaps)
+        Try
+            dbCon.ConnectionString = objConstants.ConnectionString()
+            dbCon.Open()
 
-                objWriter.Write(strLine)
-                objWriter.Write(Environment.NewLine)
-                objWriter.Close()
+            Dim dbCmd As New OleDbCommand("INSERT INTO RacingEvents (EventTitle, EventDate, RegistrationFee, EventLocation, NumberOfLaps) VALUES (@title, @date, @fee, @location, @laps)", dbCon)
 
+            dbCmd.Parameters.AddWithValue("@title", EventTitle)
+            dbCmd.Parameters.AddWithValue("@date", EventDate)
+            dbCmd.Parameters.AddWithValue("@fee", RegistrationFee)
+            dbCmd.Parameters.AddWithValue("@location", EventLocation)
+            dbCmd.Parameters.AddWithValue("@laps", NumberOfLaps)
+
+            Dim res As Integer = dbCmd.ExecuteNonQuery()
+            If res = 1 Then
                 strMsg = "Record saved successfully!"
                 blnResult = True
-
-            Catch ex As Exception
-                strMsg = ex.Message
+            Else
+                strMsg = "Error: Record not saved!"
                 blnResult = False
-            End Try
-        Else
-            strMsg = "Racing events data file does not exist."
-            blnResult = False
-        End If
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Error: " + ex.Message, "Data Access Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Finally
+            dbCon.Close()
+        End Try
 
         Return blnResult
     End Function
 
     Public Function Update(ByRef strMsg As String) As Boolean
-        ''
         Dim blnResult As Boolean = False
+
         Dim dbCon As New OleDbConnection()
         Dim dbDA As New OleDbDataAdapter()
         Dim dbDS As New DataSet()
@@ -125,7 +130,7 @@ Public Class RacingEvent
             dbCon.ConnectionString = objConstants.ConnectionString()
             dbCon.Open()
 
-            Dim dbCmd As New OleDbCommand("UPDATE [RacingDrivers.csv] SET EventDate=@date, RegistrationFee=@fee, EventLocation=@location, NumberOfLaps=@laps WHERE EventTitle=@title", dbCon)
+            Dim dbCmd As New OleDbCommand("UPDATE RacingEvents SET EventDate=@date, RegistrationFee=@fee, EventLocation=@location, NumberOfLaps=@laps WHERE EventTitle=@title", dbCon)
 
             dbCmd.Parameters.AddWithValue("@date", EventDate)
             dbCmd.Parameters.AddWithValue("@fee", RegistrationFee)
@@ -142,7 +147,37 @@ Public Class RacingEvent
                 blnResult = False
             End If
         Catch ex As Exception
-            MessageBox.Show("Cannot access data file:" + ex.Message, "Data Access Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Error: " + ex.Message, "Data Access Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Finally
+            dbCon.Close()
+        End Try
+
+        Return blnResult
+    End Function
+
+    Public Function Delete(ByRef strMsg As String) As Boolean
+        Dim blnResult As Boolean = False
+
+        Dim dbCon As New OleDbConnection()
+
+        Try
+            dbCon.ConnectionString = objConstants.ConnectionString()
+            dbCon.Open()
+
+            Dim dbCmd As New OleDbCommand("DELETE FROM RacingEvents WHERE EventTitle=@title", dbCon)
+
+            dbCmd.Parameters.AddWithValue("@title", EventTitle)
+
+            Dim res As Integer = dbCmd.ExecuteNonQuery()
+            If res = 1 Then
+                strMsg = "Record deleted successfully!"
+                blnResult = True
+            Else
+                strMsg = "Error: Record not deleted!"
+                blnResult = False
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Error: " + ex.Message, "Data Access Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
             dbCon.Close()
         End Try
@@ -160,7 +195,7 @@ Public Class RacingEvent
             dbCon.ConnectionString = objConstants.ConnectionString()
             dbCon.Open()
 
-            Dim dbCmd As New OleDbCommand("SELECT * FROM [RacingEvents.csv] WHERE EventTitle=@title", dbCon)
+            Dim dbCmd As New OleDbCommand("SELECT * FROM RacingEvents WHERE EventTitle=@title", dbCon)
             dbCmd.Parameters.AddWithValue("@title", strSearch)
 
             dbDA.SelectCommand = dbCmd

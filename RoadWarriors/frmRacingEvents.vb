@@ -18,7 +18,22 @@
 
     Private Sub dgvRacingEvents_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvRacingEvents.CellContentClick
         ''
+        Dim i As Integer = 0
+        Try
+            i = dgvRacingEvents.CurrentRow.Index
 
+            txtTitle.Text = CStr(dgvRacingEvents.Item(1, i).Value)
+            dteDateofEvent.Value = CDate(dgvRacingEvents.Item(2, i).Value)
+            txtRegistrationFee.Text = CStr(dgvRacingEvents.Item(3, i).Value)
+            txtEventLocation.Text = CStr(dgvRacingEvents.Item(4, i).Value)
+            txtNumberofLaps.Text = CStr(dgvRacingEvents.Item(5, i).Value)
+
+            ''
+            btnDelete.Enabled = True
+            btnUpdate.Enabled = True
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Private Sub txtSearch_TextChanged(sender As Object, e As EventArgs) Handles txtSearch.TextChanged
@@ -44,7 +59,7 @@
             MessageBox.Show(dtResult.Rows.Count & " record(s) found.", "Racing Driver: Search", MessageBoxButtons.OK, MessageBoxIcon.Information)
             dgvRacingEvents.DataSource = dtResult
         Else
-            MessageBox.Show("Error: No racing driver exists of that name.", "Racing Driver: Search", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show(String.Format("Error: {0}", strMsg), "Racing Driver: Search", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End If
     End Sub
 
@@ -70,12 +85,38 @@
 
     Private Sub btnUpdate_Click(sender As Object, e As EventArgs) Handles btnUpdate.Click
         ''
+        Dim blnResponse As Boolean = False, strMsg As String = ""
 
+        ''
+        objRacingEvent.EventTitle = txtTitle.Text
+        objRacingEvent.EventDate = dteDateofEvent.Value
+        objRacingEvent.RegistrationFee = txtRegistrationFee.Text
+        objRacingEvent.EventLocation = txtEventLocation.Text
+        objRacingEvent.NumberOfLaps = txtNumberofLaps.Text
+
+        ''
+        blnResponse = objRacingEvent.Update(strMsg:=strMsg)
+        If blnResponse = True Then
+            MessageBox.Show(strMsg, "Racing Event: Create", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Else
+            MessageBox.Show(strMsg, "Racing Event: Create", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End If
     End Sub
 
     Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
         ''
+        Dim blnResponse As Boolean = False, strMsg As String = ""
 
+        ''
+        objRacingEvent.EventTitle = txtTitle.Text
+
+        ''
+        blnResponse = objRacingEvent.Update(strMsg:=strMsg)
+        If blnResponse = True Then
+            MessageBox.Show(strMsg, "Racing Event: Create", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Else
+            MessageBox.Show(strMsg, "Racing Event: Create", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End If
     End Sub
 #End Region
 
