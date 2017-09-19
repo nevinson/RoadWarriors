@@ -1,23 +1,21 @@
 ﻿Public Class frmEventsResults
     ''
     Dim objConstants As New Constants()
-    Dim objEventResult As New EventResult()
+    Dim objEventResults As New EventResult()
 
 #Region "Main Controls"
     Private Sub frmEventsResults_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ''
-        dgvEventResults.DataSource = objEventResult.getEventsResults()
+        dgvEventResults.DataSource = objEventResults.getEventsResults()
 
         ''
-        cmbEventTitle.DataSource = objEventResult.getEventsTitles()
-        cmbEventTitle.ValueMember = "EventTitle"
-        cmbEventTitle.DisplayMember = "EventTitle"
+        cmbEventTitle.ValueMember = "﻿EventTitle"
+        cmbEventTitle.DataSource = objEventResults.dtEvents
+        cmbEventTitle.SelectedIndex = -1
 
-        ''
-        cmbRacerName.DataSource = objEventResult.getRacerName()
         cmbRacerName.ValueMember = "Name"
-        cmbRacerName.DisplayMember = "Name"
-        MsgBox(objEventResult.getRacerNumber("Lerato"))
+        cmbRacerName.DataSource = objEventResults.dtRacerNames
+        cmbRacerName.SelectedIndex = 0
     End Sub
 
     Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
@@ -27,6 +25,7 @@
 
     Private Sub cmbRacerName_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbRacerName.SelectedIndexChanged
         ''
+        txtRacerSurname.Text = objEventResults.getSurname(cmbRacerName.SelectedValue)
 
     End Sub
 
@@ -46,14 +45,14 @@
         Dim strMsg As String = Nothing
 
         ''
-        dtResult = objEventResult.Search(strSearch:=strSearch, strMsg:=strMsg)
+        dtResult = objEventResults.Search(strSearch:=strSearch, strMsg:=strMsg)
 
         ''
         If dtResult.Rows.Count > 0 Then
-            MessageBox.Show(dtResult.Rows.Count & " record(s) found.", "Racing Driver: Search", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            MessageBox.Show(dtResult.Rows.Count & " record(s) found.", "Event Results: Search", MessageBoxButtons.OK, MessageBoxIcon.Information)
             dgvEventResults.DataSource = dtResult
         Else
-            MessageBox.Show("Error: No racing driver exists of that name.", "Racing Driver: Search", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Error: No racing driver exists of that name.", "Event Results: Search", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End If
     End Sub
 
@@ -62,17 +61,17 @@
         Dim blnResponse As Boolean = False, strMsg As String = ""
 
         ''
-        objEventResult.EventTitle = cmbEventTitle.SelectedValue
-        objEventResult.RacerName = cmbRacerName.SelectedValue
-        objEventResult.RacerSurname = txtRacerSurname.Text
-        objEventResult.Position = txtPosition.Text
-        objEventResult.EventDate = dteEventDate.Value
+        objEventResults.EventTitle = cmbEventTitle.SelectedValue
+        objEventResults.RacerName = cmbRacerName.SelectedValue
+        objEventResults.RacerSurname = txtRacerSurname.Text
+        objEventResults.Position = txtPosition.Text
+        objEventResults.EventDate = dteEventDate.Value
 
-        blnResponse = objEventResult.Create(strMsg:=strMsg)
+        blnResponse = objEventResults.Create()
         If blnResponse = True Then
-            MessageBox.Show(strMsg, "Events Results: Create", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            MessageBox.Show(strMsg, "Event Results: Create", MessageBoxButtons.OK, MessageBoxIcon.Information)
         Else
-            MessageBox.Show(strMsg, "Events Results: Create", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show(strMsg, "Event Results: Create", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End If
     End Sub
 #End Region
@@ -80,7 +79,7 @@
 #Region "File Menu Strip"
     Private Sub ReloadResultsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ReloadResultsToolStripMenuItem.Click
         ''
-        dgvEventResults.DataSource = objEventResult.getEventsResults()
+        dgvEventResults.DataSource = objEventResults.getEventsResults()
     End Sub
 
     Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click

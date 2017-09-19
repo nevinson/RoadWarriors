@@ -9,7 +9,7 @@ Public Class EventResult
     Private intPosition As Integer
     Private dteEventDate As System.DateTime
 
-    Private objConstants As New Constants()
+    Dim objConstants As New Constants()
 
 #Region "Properties"
     Public Property EventTitle() As String
@@ -104,83 +104,9 @@ Public Class EventResult
         Return dbDS.Tables(0)
     End Function
 
-    Public Function getRacerName() As DataTable
-        ''
-        Dim dbCon As New OleDbConnection()
-        Dim dbDA As New OleDbDataAdapter()
-        Dim dbTable As New DataTable()
-
-        Try
-            dbCon.ConnectionString = objConstants.ConnectionString()
-            dbCon.Open()
-
-            Dim dbCmd As New OleDbCommand("SELECT ﻿MembershipNumber, Name FROM RacingDrivers", dbCon)
-
-            dbTable.Load(dbCmd.ExecuteReader())
-        Catch ex As Exception
-            MessageBox.Show("Cannot access data file:" + ex.Message, "Data Access Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        Finally
-            dbCon.Close()
-        End Try
-
-        Return dbTable
-    End Function
-
-    Public Function getRacerNumber(ByVal strName As String) As String
-        ''
-        Dim dbCon As New OleDbConnection()
-        Dim dbDA As New OleDbDataAdapter()
-        Dim dtTable As New DataTable()
-
-        Try
-            dbCon.ConnectionString = objConstants.ConnectionString()
-            dbCon.Open()
-
-            Dim dbCmd As New OleDbCommand("SELECT Surname FROM RacingDrivers  WHERE Name=@name", dbCon)
-            dbCmd.Parameters.AddWithValue("@name", strName)
-
-            dtTable.Load(dbCmd.ExecuteReader())
-        Catch ex As Exception
-            MessageBox.Show("Cannot access data file:" + ex.Message, "Data Access Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        Finally
-            dbCon.Close()
-        End Try
-
-        Return dtTable.Rows(0)("MembershipNumber").ToString()
-    End Function
-
-    Public Function Create(ByRef strMsg As String) As Boolean
-        ''
+    Public Function Create() As Boolean
         Dim blnResult As Boolean = False
-        Dim strLine As String = ""
 
-        If File.Exists(objConstants.EventsResultsFileLocation()) Then
-            Try
-                Dim objWriter As StreamWriter = File.AppendText(objConstants.EventsResultsFileLocation())
-
-                strLine = String.Format("{0}, {1}, {2}, {3}, {4}", EventTitle, RacerName, RacerSurname, Position, EventDate)
-
-                objWriter.Write(strLine)
-                objWriter.Write(Environment.NewLine)
-                objWriter.Close()
-
-                strMsg = "Record saved successfully!"
-                blnResult = True
-
-            Catch ex As Exception
-                strMsg = ex.Message
-                blnResult = False
-            End Try
-        Else
-            strMsg = "Racing events data file does not exist."
-            blnResult = False
-        End If
-
-        Return blnResult
-    End Function
-
-    Public Function Search(ByVal strSearch As String, ByRef strMsg As String) As DataTable
-        ''
         Dim dbCon As New OleDbConnection()
         Dim dbDA As New OleDbDataAdapter()
         Dim dbDS As New DataSet()
@@ -189,7 +115,41 @@ Public Class EventResult
             dbCon.ConnectionString = objConstants.ConnectionString()
             dbCon.Open()
 
-            Dim dbCmd As New OleDbCommand("SELECT * FROM [EventResults.csv] WHERE EventTitle=@title OR RacerName=@name", dbCon)
+            Dim dbCmd As New OleDbCommand("INSERT INTO EventResults (EventTitle, RacerName, RacerSurname, Position, EventDate) VALUES (@title, @name, @surname, @position, @date)", dbCon)
+
+            dbCmd.Parameters.AddWithValue("@title", EventTitle)
+            dbCmd.Parameters.AddWithValue("@name", RacerName)
+            dbCmd.Parameters.AddWithValue("@surname", RacerSurname)
+            dbCmd.Parameters.AddWithValue("@position", Position)
+            dbCmd.Parameters.AddWithValue("@date", EventDate)
+
+            Dim res As Integer = dbCmd.ExecuteNonQuery()
+            If res = 1 Then
+                MessageBox.Show("Record saved successfully!")
+                blnResult = True
+            Else
+                MessageBox.Show("Error: Record not saved!")
+                blnResult = False
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Error: " + ex.ToString(), "Data Access Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Finally
+            dbCon.Close()
+        End Try
+
+        Return blnResult
+    End Function
+
+    Public Function Search(ByVal strSearch As String, ByRef strMsg As String) As DataTable
+        Dim dbCon As New OleDbConnection()
+        Dim dbDA As New OleDbDataAdapter()
+        Dim dbDS As New DataSet()
+
+        Try
+            dbCon.ConnectionString = objConstants.ConnectionString()
+            dbCon.Open()
+
+            Dim dbCmd As New OleDbCommand("SELECT * FROM EventResults WHERE EventTitle=@title OR RacerName=@name", dbCon)
             dbCmd.Parameters.AddWithValue("@title", strSearch)
             dbCmd.Parameters.AddWithValue("@name", strSearch)
 
@@ -203,6 +163,68 @@ Public Class EventResult
         End Try
 
         Return dbDS.Tables(0)
+    End Function
+
+    Public Function dtEvents() As DataTable
+        Dim dbCon As New OleDbConnection(), dbCmd As New OleDbCommand(), dtTable As New DataTable()
+
+        With dbCon
+            .ConnectionString = objConstants.ConnectionString()
+            .Open()
+
+            With dbCmd
+                .Connection = dbCon
+                .CommandText = "SELECT ﻿EventTitle FROM RacingEvents"
+
+                dtTable.Load(.ExecuteReader())
+            End With
+
+            .Close()
+        End With
+
+        Return dtTable
+    End Function
+
+    Public Function dtRacerNames() As DataTable
+        Dim dbCon As New OleDbConnection(), dbCmd As New OleDbCommand(), dtTable As New DataTable()
+
+        With dbCon
+            .ConnectionString = objConstants.ConnectionString()
+            .Open()
+
+            With dbCmd
+                .Connection = dbCon
+                .CommandText = "SELECT Name FROM RacingDrivers"
+
+                dtTable.Load(.ExecuteReader())
+            End With
+
+            .Close()
+        End With
+
+        Return dtTable
+    End Function
+
+    Public Function getSurname(ByVal strName As String) As String
+        Dim dbCon As New OleDbConnection(), dbCmd As New OleDbCommand(), dtTable As New DataTable()
+
+        With dbCon
+            .ConnectionString = objConstants.ConnectionString()
+            .Open()
+
+            With dbCmd
+                .Connection = dbCon
+                .CommandText = "SELECT Surname FROM RacingDrivers WHERE Name=@name"
+
+                .Parameters.AddWithValue("@name", strName)
+
+                dtTable.Load(.ExecuteReader())
+            End With
+
+            .Close()
+        End With
+
+        Return dtTable.Rows(0)("Surname").ToString()
     End Function
 #End Region
 End Class
