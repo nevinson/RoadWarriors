@@ -60,27 +60,24 @@ Public Class EventResult
 
 #Region "CRUD Methods"
     Public Function getEventsResults() As DataTable
-        ''
         Dim dbCon As New OleDbConnection()
         Dim dbDA As New OleDbDataAdapter()
-        Dim dbDS As New DataSet()
+        Dim dbTable As New DataTable()
 
         Try
             dbCon.ConnectionString = objConstants.ConnectionString()
             dbCon.Open()
 
-            Dim dbCmd As New OleDbCommand("SELECT * FROM [EventResults.csv]", dbCon)
+            Dim dbCmd As New OleDbCommand("SELECT * FROM EventResults", dbCon)
 
-            dbDA.SelectCommand = dbCmd
-            dbDA.Fill(dbDS)
-            dbDA.Dispose()
+            dbTable.Load(dbCmd.ExecuteReader())
         Catch ex As Exception
-            MessageBox.Show("Cannot access data file:" + ex.Message, "Data Access Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Error: " + ex.Message, "Data Access Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
             dbCon.Close()
         End Try
 
-        Return dbDS.Tables(0)
+        Return dbTable
     End Function
 
     Public Function getEventsTitles() As DataTable
@@ -93,7 +90,7 @@ Public Class EventResult
             dbCon.ConnectionString = objConstants.ConnectionString()
             dbCon.Open()
 
-            Dim dbCmd As New OleDbCommand("SELECT EventTitle FROM [RacingEvents.csv]", dbCon)
+            Dim dbCmd As New OleDbCommand("SELECT EventTitle FROM RacingEvents", dbCon)
 
             dbDA.SelectCommand = dbCmd
             dbDA.Fill(dbDS)
@@ -111,27 +108,25 @@ Public Class EventResult
         ''
         Dim dbCon As New OleDbConnection()
         Dim dbDA As New OleDbDataAdapter()
-        Dim dbDS As New DataSet()
+        Dim dbTable As New DataTable()
 
         Try
             dbCon.ConnectionString = objConstants.ConnectionString()
             dbCon.Open()
 
-            Dim dbCmd As New OleDbCommand("SELECT Name FROM [RacingDrivers.csv]", dbCon)
+            Dim dbCmd As New OleDbCommand("SELECT ﻿MembershipNumber, Name FROM RacingDrivers", dbCon)
 
-            dbDA.SelectCommand = dbCmd
-            dbDA.Fill(dbDS)
-            dbDA.Dispose()
+            dbTable.Load(dbCmd.ExecuteReader())
         Catch ex As Exception
             MessageBox.Show("Cannot access data file:" + ex.Message, "Data Access Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
             dbCon.Close()
         End Try
 
-        Return dbDS.Tables(0)
+        Return dbTable
     End Function
 
-    Public Function getRacerDetails(ByVal strMembershipNumber As String) As String
+    Public Function getRacerNumber(ByVal strName As String) As String
         ''
         Dim dbCon As New OleDbConnection()
         Dim dbDA As New OleDbDataAdapter()
@@ -141,8 +136,8 @@ Public Class EventResult
             dbCon.ConnectionString = objConstants.ConnectionString()
             dbCon.Open()
 
-            Dim dbCmd As New OleDbCommand("SELECT Surname FROM [RacingDrivers.csv]  WHERE Name=@name", dbCon)
-            dbCmd.Parameters.AddWithValue("@name", strMembershipNumber)
+            Dim dbCmd As New OleDbCommand("SELECT Surname FROM RacingDrivers  WHERE Name=@name", dbCon)
+            dbCmd.Parameters.AddWithValue("@name", strName)
 
             dtTable.Load(dbCmd.ExecuteReader())
         Catch ex As Exception
@@ -151,7 +146,7 @@ Public Class EventResult
             dbCon.Close()
         End Try
 
-        Return dtTable.Rows(0)("Surname").ToString()
+        Return dtTable.Rows(0)("MembershipNumber").ToString()
     End Function
 
     Public Function Create(ByRef strMsg As String) As Boolean

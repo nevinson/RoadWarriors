@@ -17,7 +17,7 @@
         cmbRacerName.DataSource = objEventResult.getRacerName()
         cmbRacerName.ValueMember = "Name"
         cmbRacerName.DisplayMember = "Name"
-
+        MsgBox(objEventResult.getRacerNumber("Lerato"))
     End Sub
 
     Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
@@ -27,11 +27,7 @@
 
     Private Sub cmbRacerName_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbRacerName.SelectedIndexChanged
         ''
-        Try
-            txtRacerSurname.Text = objEventResult.getRacerDetails(cmbRacerName.SelectedValue.ToString())
-        Catch ex As Exception
-            'MsgBox(ex.Message)
-        End Try
+
     End Sub
 
     Private Sub txtSearch_TextChanged(sender As Object, e As EventArgs) Handles txtSearch.TextChanged
