@@ -3,6 +3,9 @@ Imports System.IO
 
 Public Class EventResult
     ''
+    ''' <summary>
+    ''' 
+    ''' </summary>
     Private strEventTitle As String
     Private strRacerName As String
     Private strRacerSurname As String
